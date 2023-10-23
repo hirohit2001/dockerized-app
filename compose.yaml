@@ -1,0 +1,27 @@
+services:
+  todo-app:
+    working_dir: /app
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "npm install && npm start"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: pwd
+      MYSQL_DB: todos
+    ports:
+      - 127.0.0.1:3000:3000
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=pwd
+      - MYSQL_DATABASE=todos
+    volumes:
+      - todo-app-data:/var/lib/mysql
+    ports:
+      - 127.0.0.1:3306:3306
+
+volumes:
+  todo-app-data:
